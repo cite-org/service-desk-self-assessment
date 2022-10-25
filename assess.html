@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #instructions {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 25px;
+    }
+    #topic {
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      font-size: 24px;
+      color: #444;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+    #question {
+      margin-top: 15px;
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      font-size: 24px;
+      color: #095c86;
+    }
+    #user-choice {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 18px;
+      color: #444
+    }
+    #error {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 16px;
+      color: red;
+    }
+    #copyright {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 10px;
+      color: #444;
+    }
+    #results {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 18px;
+      color: #444;
+      display: none;
+    }
+    #results-heading {
+      margin-top: 15px;
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      font-size: 36px;
+      color: #095c86;
+      text-align: center;
+    }
+    #submit {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      width: 200px;
+      font-size: 18px;
+      margin: 20px 0px;
+      background-color: #0f91d2;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      border-radius: 7px;
+    }
+    #submit span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+    #submit span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+    #submit:hover {
+      background-color: #1aa8ef;
+    }
+    #submit:hover span {
+      padding-right: 25px;
+    }
+    #submit:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+    #submit:active {
+      background-color: #3f7793;
+      transform: translateY(4px);
+    }
+    .response {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <p id="instructions">
+    <strong>Instructions:</strong> This short self-assessment of 25 questions will give you quick insight into the maturity level of your Service Desk. 
+    Simply rate yourself on the questions in each section on a scale from 1 (low) to 5 (high). 
+    Your total score and the Maturity Index rating scale will be displayed after the questionnaire is completed.
+  </p>
+
+  <p id="topic"></p>
+  <p id="question"></p>
+
+  <form id="user-choice">
+    <p>On a scale of 1 (low) to 5 (high), rate how well your IT Help Desk performs in this area.</p>
+    <span class="response">
+      <input type="radio" id="scale-1" name="scale" value="1">
+      <label for="scale-1">1</label>
+    </span>
+    <span class="response">
+      <input type="radio" id="scale-2" name="scale" value="2">
+      <label for="scale-2">2</label>
+    </span>
+    <span class="response">
+      <input type="radio" id="scale-3" name="scale" value="3">
+      <label for="scale-3">3</label>
+    </span>
+    <span class="response">
+    <input type="radio" id="scale-4" name="scale" value="4">
+    <label for="scale-4">4</label>
+    </span>
+    <span class="response">
+      <input type="radio" id="scale-5" name="scale" value="5">
+      <label for="scale-5">5</label>
+    </span>
+  </form>
+  <button id="submit"><span>Begin </span></button>
+  
+  <div id="results">
+    <p id="results-heading">Results</p>
+    <p>
+      Your scores:
+      <ul>
+        <li>Processes & Best Practices: <span id="proc-prac"></span></li>
+        <li>Organizational Integration: <span id="org-int"></span></li>
+        <li>Technology Optimization: <span id="tech-opt"></span></li>
+        <li>Staff Development: <span id="sta-dev"></span></li>
+        <li>Information Management: <span id="inf-man"></span></li>
+      </ul>
+      And your overall Service Desk Maturity Score is: <strong><span id="total"></span></strong>
+
+      <p id="proc-prac-info"><strong>Processes & Best Practices</strong> is one of your weaker areas.</p>
+      <p id="org-int-info"><strong>Organizational Integration</strong> is one of your weaker areas.</p>
+      <p id="tech-opt-info"><strong>Technology Optimization</strong> is one of your weaker areas.</p>
+      <p id="sta-dev-info"><strong>Staff Development</strong> is one of your weaker areas.</p>
+      <p id="inf-man-info"><strong>Information Management</strong> is one of your weaker areas.</p>
+    </p>
+
+  </div>
+
+  <p id="error"></p>
+
+  <p id="copyright">Adapted from Giva's "<a href="https://www.givainc.com/wp/25-question-service-desk-assessment.cfm">Service Desk/Help Desk Best Practices Assessment</a>"</p>
+</body>
+<script>
+  let question = 0;
+  let answers = [];
+
+  document.querySelector("#user-choice").style.display = "none";
+
+  document.querySelector("#submit").onclick = function () {
+    // Just move forward to begin assessment
+    if (question === 0) {
+      setQuestion(++question);
+    }
+    // Or, display the results if finished
+    else if (question === 25) {
+      // Hide all elements
+      document.querySelector("#topic").style.display = "none";
+      document.querySelector("#question").style.display = "none";
+      document.querySelector("#user-choice").style.display = "none";
+      document.querySelector("#submit").style.display = "none";
+      document.querySelector("#error").style.display = "none";
+
+      // Add answer to array
+      let val = parseInt(document.querySelector('input[type="radio"]:checked').value);
+      answers.push(val);
+
+      // Display results
+      displayResults(answers);
+    }
+    // Otherwise, keep answer questions and gathering data
+    else {
+      if (document.querySelectorAll('input[type="radio"]:checked').length === 0) {
+        document.querySelector("#error").innerHTML = "Please select a value above...";
+      }
+      else {
+        // Clear error if it exists
+        document.querySelector("#error").innerHTML = "";
+
+        // Add answer to array
+        let val = parseInt(document.querySelector('input[type="radio"]:checked').value);
+        answers.push(val);
+
+        // Clear radio buttons
+        document.querySelector('input[type="radio"]:checked').checked = false;
+
+        setQuestion(++question);
+      }
+    }
+  }
+
+  function setQuestion(question) {
+    let text;
+    switch(question) {
+      case 1:
+        document.querySelector("#user-choice").style.display = "block";
+        document.querySelector("#topic").innerHTML = "&nbsp";
+        document.querySelector("#submit").innerHTML = "<span>Submit </span>"
+        fadeInTopic("Service Desk Processes");
+
+        text = "1. Are incidents recorded by the Service Desk in a formal and consistent manner? (e.g. ticketing system software)";
+        break;
+      case 2:
+        text = "2. Is there a well developed schema for the categorization and identification of recorded incidents?";
+        break;
+      case 3:
+        text = "3. Is incident lifecycle management including opening, monitoring progress, resolution, and client feedback performed in a formal and consistent manner?";
+        break;
+      case 4:
+        text = "4. Are all Service Desk processes and procedures documented and adhered to by Service Desk personnel?";
+        break;
+      case 5:
+        text = "5. Are Service Desk policies based upon a best practices framework such as ITIL?";
+        break;
+      case 6:
+        fadeInTopic("Organizational Integration");
+        text = "6. Is there a common understanding of the Service Desk's role and scope throughout the organization?";
+        break;
+      case 7:
+        text = "7. Are the services supplied by Service Desk clearly documented and communicated to the organization?";
+        break;
+      case 8:
+        text = "8. Are regular meetings with key stakeholders held to assess their needs and ascertain their perception of the value of the Service Desk and the services provided?";
+        break;
+      case 9:
+        text = "9. Is the Service Desk regularly included in discussions regarding strategic IT initiatives and given sufficient notice of new support requirements?";
+        break;
+      case 10:
+        text = "10. Is the Service Desk seen as a focal point for communicating information and data from IT to the rest of the organization?";
+        break;
+      case 11:
+        fadeInTopic("Technology Optimization");
+        text = "11. Are standard reports concerning incidents produced regularly?";
+        break;
+      case 12:
+        text = "12. Is the tool for incident management able to generate robust and useful reporting on Service Desk metrics and SLAs?";
+        break;
+      case 13:
+        text = "13. Is a knowledge base solution in place to house known problems and solutions?";
+        break;
+      case 14:
+        text = "14. Are there self service tools in place for end-users to allow for password resets, entry of incidents, or searches for solutions to common problems?";
+        break;
+      case 15:
+        text = "15. Have the majority of redundant or manual processes been automated?";
+        break;
+      case 16:
+        fadeInTopic("Staff Development");
+        text = "16. Do you regularly provide feedback to each Agent regarding the quality of calls and processing of the incident management lifecycle?";
+        break;
+      case 17:
+        text = "17. Is there a career path in place for Service Desk Agents allowing them to advance within the organization?";
+        break;
+      case 18:
+        text = "18. Are Service Desk personnel required to earn professional or technical certification?";
+        break;
+      case 19:
+        text = "19. Is personnel satisfaction measured in a regular and consistent manner?";
+        break;
+      case 20:
+        text = "20. What is the level of Service Desk Analyst turnover? (High turnover = 1, Low turnover = 5)";
+        break;
+      case 21:
+        fadeInTopic("Information Management");
+        text = "21. Does the Service Desk have formal Service Level Agreements (SLAs) in place?";
+        break;
+      case 22:
+        text = "22. Is Service Desk performance against SLAs measured and reported on a regular basis?";
+        break;
+      case 23:
+        text = "23. Does the Service Desk perform regular trend analysis regarding incident occurrence and resolution?";
+        break;
+      case 24:
+        text = "24. Does Service Desk contribute in a meaningful way to the processes of Problem or Change Management?";
+        break;
+      case 25:
+        text = "25. Is client and stakeholder feedback gathered and used to fuel continuous service improvement efforts?";
+        break;
+    }
+    document.querySelector("#question").innerHTML = text;
+  }
+
+  function fadeInTopic(text) {
+            var fade = document.getElementById("topic");
+            var opacity = 0;
+            var intervalID = setInterval(function() {
+            document.querySelector("#topic").innerHTML = text;
+  
+                if (opacity < 1) {
+                    opacity = opacity + 0.1
+                    fade.style.opacity = opacity;
+                } else {
+                    clearInterval(intervalID);
+                }
+            }, 50);
+          }
+
+  function displayResults(results) {
+    let processesTot = results[0] + results[1] + results[2] + results[3] + results[4];
+    document.querySelector("#proc-prac").innerHTML = processesTot;
+
+    let integrationTot = results[5] + results[6] + results[7] + results[8] + results[9];
+    document.querySelector("#org-int").innerHTML = integrationTot;
+
+    let optimizationTot = results[10] + results[11] + results[12] + results[13] + results[14];
+    document.querySelector("#tech-opt").innerHTML = optimizationTot;
+    
+    let staffDevTot = results[15] + results[16] + results[17] + results[18] + results[19];
+    document.querySelector("#sta-dev").innerHTML = staffDevTot;
+    
+    let infoManagmentTot = results[20] + results[21] + results[22] + results[23] + results[24];
+    document.querySelector("#inf-man").innerHTML = infoManagmentTot;
+    
+    let grandTotal = processesTot + integrationTot + optimizationTot + staffDevTot + infoManagmentTot;
+    document.querySelector("#total").innerHTML = grandTotal;
+
+    // Display the Results HTML
+    document.querySelector("#results").style.display = "block";
+
+    // Hide strongest areas; focus on weaker areas
+    let weakest = Math.min(processesTot, integrationTot, optimizationTot, staffDevTot, infoManagmentTot);
+
+    if (processesTot > weakest) {
+      document.querySelector("#proc-prac-info").style.display = "none";
+    }
+    if (integrationTot > weakest) {
+      document.querySelector("#org-int-info").style.display = "none";
+    }
+    if (optimizationTot > weakest) {
+      document.querySelector("#tech-opt-info").style.display = "none";
+    }
+    if (staffDevTot > weakest) {
+      document.querySelector("#sta-dev-info").style.display = "none";
+    }
+    if (infoManagmentTot > weakest) {
+      document.querySelector("#inf-man-info").style.display = "none";
+    }
+
+
+
+
+
+  }
+</script>
+</html>
