@@ -53,6 +53,38 @@
       color: #095c86;
       text-align: center;
     }
+
+    #maturity-scores-table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 40px auto;
+    }
+    #maturity-scores-table th {
+      background-color: #095c86;
+      color: white;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+      font-weight: 500;
+    }
+    #maturity-scores-table td, #maturity-scores-table th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    #maturity-scores-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    #maturity-scores-table tr:hover {background-color: #ddd;}
+    #maturity-scores-table td:nth-child(1) {
+      width: 60px;
+      text-align: center;
+    }
+    #maturity-scores-table td:nth-child(2) {
+      width: 140px;
+      text-align: center;
+    }
+
+
     #submit {
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       width: 200px;
@@ -135,8 +167,9 @@
   <button id="submit"><span>Begin </span></button>
   
   <div id="results">
-    <p id="results-heading">Results</p>
-    <p>
+    <div id="results-heading">Results</div>
+
+    <div>
       Your scores:
       <ul>
         <li>Processes & Best Practices: <span id="proc-prac"></span></li>
@@ -145,15 +178,86 @@
         <li>Staff Development: <span id="sta-dev"></span></li>
         <li>Information Management: <span id="inf-man"></span></li>
       </ul>
-      And your overall Service Desk Maturity Score is: <strong><span id="total"></span></strong>
+    </div>
 
-      <p id="proc-prac-info"><strong>Processes & Best Practices</strong> is one of your weaker areas.</p>
-      <p id="org-int-info"><strong>Organizational Integration</strong> is one of your weaker areas.</p>
-      <p id="tech-opt-info"><strong>Technology Optimization</strong> is one of your weaker areas.</p>
-      <p id="sta-dev-info"><strong>Staff Development</strong> is one of your weaker areas.</p>
-      <p id="inf-man-info"><strong>Information Management</strong> is one of your weaker areas.</p>
-    </p>
+    <p>And your overall Help Desk Maturity Score is: <strong><span id="total"></span></strong></p>
 
+    <p>Evaluate your score based on the following table:</p>
+
+    <table id="maturity-scores-table">
+      <tr>
+        <th id="score">Score</th>
+        <th id="maturity">Maturity Level</th>
+        <th id="description">Description</th>
+      </tr>
+      <tr>
+        <td>125</td>
+        <td>Actualized</td>
+        <td>The Help Desk is operating in a fully proactive mode. Help Desk processes are clearly documented and work extremely well. Additionally, the Help Desk is integrated and adds value to other departments within the organization. The Help Desk is able to measure and communicate its impact on the overall business.</td>
+      </tr>
+      <tr>
+        <td>110</td>
+        <td>Optimal</td>
+        <td>The Help Desk is operating in a mostly proactive mode. Help Desk processes are documented and work well. The Help Desk is integrated with the rest of IT. The Help Desk has metrics in place and they are used to improve upon existing processes and services.</td>
+      </tr>
+      <tr>
+        <td>99</td>
+        <td>Evolving</td>
+        <td>The Help Desk is fluctuating between proactive and reactive modes. Documented processes exist and there is an ability to trend and measure performance, but not against overall business goals/metrics. Some integration exists with other departments.</td>
+      </tr>
+      <tr>
+        <td>74</td>
+        <td>Unrealized</td>
+        <td>The Help Desk is operating in a mostly reactive mode. Some documented processes exist but there is no real formalization or enforcement/accountability with staff. No meaningful metrics are reported.</td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>Irrelevant</td>
+        <td>The Help Desk is operating in a firefighting mode. There has been an attempt at organizing processes but no documentation exists. No meaningful operational metrics have been instituted.</td>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>Nonexistent</td>
+        <td>The Help Desk function is practically nonexistent and all support is provided in an ad-hoc manner. There are no documented processes in place, and no metrics in place to gauge performance.</td>
+      </tr>
+    </table>
+
+    <div id="proc-prac-info"><strong>Processes & Best Practices</strong> is one of your weaker areas. Consider the following questions:
+      <ol>
+        <li>Do you have a formal ticketing system in place? If not, an investment in this kind of software would dramatically improve your department's productivity.</li>
+        <li>If you do have ticketing software, is it missing key features that would make it more helpful? What features would be most needed?</li>
+        <li>Does your department need to invest more time into documenting Help Desk processes? This would help keep all staff on the same page and improve training new hires.</li>
+        <li>What framework could you use that would provide a more formal structure for the Help Desk department? ITIL is just one of many. Even an internally developed framework could be helpful.</li>
+      </ol>
+    </div>
+    <div id="org-int-info"><strong>Organizational Integration</strong> is one of your weaker areas. Consider the following questions:
+      <ol>
+        <li>Outside of your department, who might be an advocate to help you become more integrated with the rest of the campus? Set up a meeting with them to talk about improvements here.</li>
+        <li>What structure could you create to help give direction to regular meetings that connect Help Desk to the needs of campus? Consider designing a meeting template to ensure all areas are covered.</li>
+        <li>How could you better train new teachers and staff during the onboarding process, helping them understand the role and processes of Help Desk?</li>
+      </ol>
+    </div>
+    <div id="tech-opt-info"><strong>Technology Optimization</strong> is one of your weaker areas. Consider the following questions:
+      <ol>
+        <li>What are some tasks/requests you find yourself addressing over and over again? How might these be automated to minimize your service time?</li>
+        <li>What do you imagine a helpful and robust knowledge base could look like? Could your department invest time and resources towards building a video library of resolutions to common problems?</li>
+        <li>What regular reports would be most helpful in assessing the productivity and efficiency of the Help Desk? Does your current software allow this?</li>
+      </ol>
+    </div>
+    <div id="sta-dev-info"><strong>Staff Development</strong> is one of your weaker areas. Consider the following questions:
+      <ol>
+        <li>What would be some areas of expertise your department could use right now? Might there be training programs for that skill you can encourage staff to participate in?</li>
+        <li>What feedback would be most helpful to recieve from Help Desk staff? What feedback would you like to give to Help Desk staff?</li>
+        <li>Do you have a formal evaluation questionnaire? Consider a template that measures many aspects of staff knowledge and skills. Set a goal for regular evaluations.</li>
+      </ol>
+    </div>
+    <div id="inf-man-info"><strong>Information Management</strong> is one of your weaker areas. Consider the following questions:
+      <ol>
+        <li>How is institutional knowledge of your help desk stored in your school? How could information be more easily accessible to help resolve indicents and problems?</li>
+        <li>What kind of meeting or staff development opportunity could allow your Help Desk personnel come together and learn from each other? Could this be scheduled regularly?</li>
+        <li>Might it be worth formalizing an SLA between the Help Desk and the school overall? What types of service would be essential to communicate to others outside the department?</li>
+      </ol>
+    </div>
   </div>
 
   <p id="error"></p>
